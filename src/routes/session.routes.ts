@@ -2,26 +2,24 @@ import { Router } from 'express';
 
 import CreateSessionService from '../services/CreateSessionService';
 
-const usersRouter = Router();
+const sessionsRouter = Router();
 
-usersRouter.post('/', async (request, response) => {
-  try{
-    const { email, password } = request.body;
+sessionsRouter.post('/', async (request, response) => {
+  const { email, password } = request.body;
 
-    const sessionUser = new CreateSessionService();
+  console.log({ email, password });
 
-    const { user, token } = await sessionUser.execute({
-      email,
-      password,
-    });
+  const sessionUser = new CreateSessionService();
 
-    delete user.password;
+  const { user, token } = await sessionUser.execute({
+    email,
+    password,
+  });
 
-    return response.json({ user, token });
-  }catch(err){
-    return response.status(400).json({ error: err.message });
-  }
+  delete user.password;
+
+  return response.json({ user, token });
 
 });
 
-export default usersRouter;
+export default sessionsRouter;
